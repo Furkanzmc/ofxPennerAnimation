@@ -31,11 +31,11 @@ public:
         }
     }
 
-    void reset()
+    void reset(const ofPoint &point = ofPoint(0, 0, 0))
     {
-        for (ofxPennerAnimation *anim : m_Animations) {
-            anim->reset();
-        }
+        m_Animations[0]->reset(point.x);
+        m_Animations[1]->reset(point.y);
+        m_Animations[2]->reset(point.z);
     }
 
     void update(const float &dt)
@@ -110,48 +110,43 @@ public:
 
     unsigned int getPlayCount() const
     {
-        for (ofxPennerAnimation *anim : m_Animations) {
-            return anim->getPlayCount();
-        }
+        return m_Animations[0]->getPlayCount();
     }
     unsigned int getRepeatCount() const
     {
-        for (ofxPennerAnimation *anim : m_Animations) {
-            return anim->getRepeatCount();
-        }
+        return m_Animations[0]->getRepeatCount();
     }
 
     PENNER_EASING getEasingType() const
     {
-        for (ofxPennerAnimation *anim : m_Animations) {
-            return anim->getEasingType();
-        }
+        return m_Animations[0]->getEasingType();
     }
 
     REPEAT getRepeatType() const
     {
-        for (ofxPennerAnimation *anim : m_Animations) {
-            return anim->getRepeatType();
-        }
+        return m_Animations[0]->getRepeatType();
     }
 
     float getDuration() const
     {
-        for (ofxPennerAnimation *anim : m_Animations) {
-            return anim->getDuration();
-        }
+        return m_Animations[0]->getDuration();
     }
 
-    ofPoint getCurrentValue() const
+    ofPoint getCurrentPosition() const
     {
         return ofPoint(m_Animations[0]->getCurrentValue(), m_Animations[1]->getCurrentValue(), m_Animations[2]->getCurrentValue());
     }
 
     bool isAnimating() const
     {
-        for (ofxPennerAnimation *anim : m_Animations) {
-            return anim->isAnimating();
-        }
+        return m_Animations[0]->isAnimating();
+    }
+
+    void setPosition(const ofPoint &point)
+    {
+        m_Animations[0]->setCurrentValue(point.x);
+        m_Animations[1]->setCurrentValue(point.y);
+        m_Animations[2]->setCurrentValue(point.z);
     }
 
 private:
