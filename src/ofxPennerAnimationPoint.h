@@ -15,14 +15,20 @@ public:
 
     ~ofxPennerAnimationPoint()
     {
-        delete m_Animations[0];
-        m_Animations[0] = nullptr;
+        if (m_Animations[0]) {
+            delete m_Animations[0];
+            m_Animations[0] = nullptr;
+        }
 
-        delete m_Animations[1];
-        m_Animations[1] = nullptr;
+        if (m_Animations[1]) {
+            delete m_Animations[1];
+            m_Animations[1] = nullptr;
+        }
 
-        delete m_Animations[2];
-        m_Animations[2] = nullptr;
+        if (m_Animations[2]) {
+            delete m_Animations[2];
+            m_Animations[2] = nullptr;
+        }
     }
 
     void reset()
