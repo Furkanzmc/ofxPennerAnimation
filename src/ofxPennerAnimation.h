@@ -44,7 +44,7 @@ public:
     float getCurrentValue() const;
 
 private:
-    bool m_IsPaused;
+    bool m_IsPaused, m_IsAnimating;
     PENNER_EASING m_EasingType;
     REPEAT m_RepeatType;
     unsigned int m_RepeatCount,

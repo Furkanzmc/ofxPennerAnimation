@@ -2,6 +2,7 @@
 
 ofxPennerAnimation::ofxPennerAnimation()
     : m_IsPaused(false)
+    , m_IsAnimating(false)
     , m_EasingType(PENNER_EASING::LINEAR)
     , m_RepeatType(REPEAT::PLAY_ONCE)
     , m_RepeatCount(0)
@@ -30,7 +31,6 @@ void ofxPennerAnimation::reset(float value)
     m_RepeatCount = 0;
     m_PlayCount = 0;
     m_Duration = 1.f;
-    m_Time = 0.f;
     m_Beginning = 0.f;
     m_Change = 0.f;
     m_CurrentValue = value;
@@ -40,12 +40,16 @@ void ofxPennerAnimation::reset(float value)
 
 void ofxPennerAnimation::update(const float &dt)
 {
+    if (m_IsAnimating == false) {
+        return;
+    }
+
     if (m_DelayTime > 0.f) {
         m_DelayTime -= dt;
         return;
     }
 
-    if (m_Time > m_Duration) {
+    if (m_Time > m_Duration && m_IsAnimating) {
         if (m_RepeatType == REPEAT::LOOP) {
             animate(m_Beginning, m_To);
         }
@@ -67,6 +71,7 @@ void ofxPennerAnimation::update(const float &dt)
             }
             m_RemainingRepeat--;
         }
+        m_IsAnimating = false;
         return;
     }
 
@@ -180,8 +185,9 @@ void ofxPennerAnimation::update(const float &dt)
 
 void ofxPennerAnimation::animate(float from, float to)
 {
-    m_CurrentValue = 0;
-    m_Time = 0;
+    m_IsAnimating = true;
+    m_CurrentValue = 0.f;
+    m_Time = 0.f;
     m_Beginning = from;
     m_Change = to - from;
     m_To = to;
@@ -193,6 +199,7 @@ void ofxPennerAnimation::animate(float from, float to)
 
 void ofxPennerAnimation::animateAfterDelay(float delay, float from, float to)
 {
+    m_IsAnimating = true;
     m_CurrentValue = 0;
     m_Time = 0;
     m_DelayTime = delay;
@@ -268,7 +275,7 @@ float ofxPennerAnimation::getDuration() const
 
 bool ofxPennerAnimation::isAnimating() const
 {
-    return m_Time <= m_Duration;
+    return m_IsAnimating;
 }
 
 float ofxPennerAnimation::getCurrentValue() const
